@@ -1,0 +1,17 @@
+body {
+    background-color: whitesmoke;
+  }
+
+  .jumbotron {
+    background-image: url("../img/top.JPG");
+    background-size: cover;
+    background-position: center 60%;
+  }
+  
+  .jumbotron h1 {
+    color: #FFCC00;
+  }
+  
+  .jumbotron p {
+    color: white;
+  }
