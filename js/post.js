@@ -19,10 +19,14 @@ map.bind("click", function(latlng){onClicked(latlng);});
 function onClicked(latlng){
   //クリック位置の緯度経度を指定して、リバースジオコーディングを実行
   var geocoder = new Y.GeoCoder();
+  
   geocoder.execute( { latlng :latlng} , function( result ) {
+    map.clearFeatures();
       if ( result.features.length > 0 ) {
           //リバースジオコーディング結果を表示
           document.getElementById('address').innerHTML = result.features[0].property.Address;
+          var label = new Y.Label(latlng, "ここ！");
+          map.addFeature(label);
       }
   });
 }
