@@ -1,6 +1,5 @@
-// 緯度経度グローバル変数用意
-var lat;  //緯度
-var lng;  //経度
+var lat;
+var lng;
 
 $(function () {
 //////////////////////////////////////////////////
@@ -8,43 +7,21 @@ $(function () {
 //////////////////////////////////////////////////
 var $ = Y.useJQuery();
 var map = new Y.Map('map');
-map.drawMap(new Y.LatLng(33.590184, 130.401689), 15);
+
+// セットされた緯度経度取得
+lat = $('#lat').val();
+lng = $('#lng').val();
+
+// console.log(coordinates);
+map.drawMap(new Y.LatLng(lat,lng), 15);
 map.addControl(new Y.LayerSetControl());
 map.addControl(new Y.SliderZoomControlVertical());
 map.addControl(new Y.SearchControl());
+lating = map.getCenter();
+var label = new Y.Label(lating, 'ここ！');
+map.addFeature(label);
 map.SearchControl
 
-// クリックイベントを設定
-map.bind('click', function (latlng) { onClicked(latlng); });
-
-//クリックイベントを定義
-function onClicked(latlng) {
-  //クリック位置の緯度経度を指定して、リバースジオコーディングを実行
-  var geocoder = new Y.GeoCoder();
-
-  geocoder.execute({ latlng: latlng }, function (result) {
-    map.clearFeatures();
-    console.log(result.features[0].property.Address);
-    if (result.features.length > 0) {
-      //リバースジオコーディング結果を表示
-      document.getElementById('address').value = result.features[0].property.Address;
-      var label = new Y.Label(latlng, 'ここ！');
-      map.addFeature(label);
-      lat = latlng.lat();
-      lng = latlng.lng();
-      console.log(lat);
-      console.log(lng);
-    }
-  });
-}
-
-
-  //////////////////////////////////////////////////
-  //場所表示
-  //////////////////////////////////////////////////
-  $('.custom-file-input').on('change', function () {
-    $(this).next('.custom-file-label').html($(this)[0].files[0].name);
-  })
 
   //////////////////////////////////////////////////
   // 投稿ボタン押下
@@ -52,7 +29,6 @@ function onClicked(latlng) {
   $('#postdata').on('click', function () {
     // 既存エラーメッセージの削除
     $('.result').empty();
-
     // 入力値の取得
     var store_name = $('#store_name').val(); //店名
     var curry_name = $('#curry_name').val(); //カレーの名前
@@ -61,10 +37,10 @@ function onClicked(latlng) {
     var address = $('#address').val(); //場所
     var mode = 'check'; // 確認 or 登録判断用変数
     console.log(store_name);
-    // イメージファイルセット
+    // // イメージファイルセット
     var fd = new FormData();
-    // var fd = new FormData($('.form-group').get(0));
-    fd.append('file', $('#customFile').prop('files')[0]);
+    // // var fd = new FormData($('.form-group').get(0));
+    // fd.append('file', $('#customFile').prop('files')[0]);
 
     // その他入力データのセット
     fd.append('store_name', store_name);
@@ -76,7 +52,7 @@ function onClicked(latlng) {
     fd.append('lng', lng);
 
     $.ajax({
-      url: '../error_check.php',
+      url: '../register.php',
       type: 'POST',
       data: fd,
       cache: false,
@@ -87,13 +63,11 @@ function onClicked(latlng) {
       // Ajax成功
       .done((data) => {
         if (data === '成功') {
-          window.location.href = '../confirm.php';
-          $('.result').append('<li>' + data + '</li>');
+          // window.location.href = '../register.php';
+          // $('.result').append('<li>' + data + '</li>');
+          $('.result').append('<li>投稿が完了しました。</li>');
         } else {
-          for (let i = 0; i < data.length; i++) {
-            console.log(data[i]);
-            $('.result').append('<li>' + data[i] + '</li>');
-          }
+          $('.result').append('<li>データに不具合がありました。最初からやり直して下さい。</li>');
         }
         console.log(data);
       })

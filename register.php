@@ -22,19 +22,19 @@ if (!isset($_POST["impression"])||($_POST["impression"]==="")){
 if (!isset($_POST["address"])||($_POST["address"]==="")){
   $errors[] = "お店の場所をセットしてください。";
 }
-if (empty($_FILES["file"]["tmp_name"])){
-  $errors[] = "写真を選択してください。";
-}
-else{
-  $imginfo = getimagesize($_FILES["file"]["tmp_name"]); // 写真
-  // 拡張子チェック
-if($imginfo["mime"] == "image/jpeg"){ $extension = ".jpg"; }
-if($imginfo["mime"] == "image/png"){ $extension = ".png"; }
-if($imginfo["mime"] == "image/gif"){ $extension = ".gif"; }
-if(empty($extension)){
-  $errors[] = "写真の拡張子はjpegか、pngか、gifでお願いします。";
-}
-}
+// if (empty($_FILES["file"]["tmp_name"])){
+//   $errors[] = "写真を選択してください。";
+// }
+// else{
+//   $imginfo = getimagesize($_FILES["file"]["tmp_name"]); // 写真
+//   // 拡張子チェック
+// if($imginfo["mime"] == "image/jpeg"){ $extension = ".jpg"; }
+// if($imginfo["mime"] == "image/png"){ $extension = ".png"; }
+// if($imginfo["mime"] == "image/gif"){ $extension = ".gif"; }
+// if(empty($extension)){
+//   $errors[] = "写真の拡張子はjpegか、pngか、gifでお願いします。";
+// }
+// }
 
 // エラーがあった時
 if (count($errors)>0){
@@ -42,12 +42,14 @@ if (count($errors)>0){
     echo $json1;
   exit();
 }
-// 画像登録処理
-$file_tmp = $_FILES["file"]["tmp_name"];
-$file_name = $_POST["curry_name"]. $extension; // アップロード時のファイル名を設定
-$file_save = "./img/tmp_img/" . $file_name; // アップロード対象のディレクトリを指定
-move_uploaded_file($file_tmp, $file_save); // アップロード処理
-        
+// // 画像登録処理
+// $file_tmp = "./img/tmp_img/" . $_POST["curry_name"];
+// // $file_name = $_POST["curry_name"]. $extension; // アップロード時のファイル名を設定
+// $file_save = "./img/" . $_POST["curry_name"]; // アップロード対象のディレクトリを指定
+// move_uploaded_file($file_tmp, $file_save); // アップロード処理
+
+// ファイルをvarディレクトリに移動する
+rename("./img/tmp_img/". $_POST["curry_name"].".jpg", "./img/" . $_POST["curry_name"].".jpg");
 // // 配列を用意
 // $ary = array('store_name'=>$_POST['store_name'],
 // 'curry_name'=>$_POST['curry_name'],

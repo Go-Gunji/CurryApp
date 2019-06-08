@@ -12,7 +12,8 @@
   <!-- CSS -->
   <link rel="stylesheet" href="css/post.css">
   <link rel="stylesheet" href="css/common.css">
-  <script src="https://map.yahooapis.jp/js/V1/jsapi?appid=dj00aiZpPVNYc1JXcXBvb2NMMCZzPWNvbnN1bWVyc2VjcmV0Jng9MDQ-" type="text/javascript" charset="UTF-8"></script>
+  <script src="https://map.yahooapis.jp/js/V1/jsapi?appid=dj00aiZpPVNYc1JXcXBvb2NMMCZzPWNvbnN1bWVyc2VjcmV0Jng9MDQ-"
+    type="text/javascript" charset="UTF-8"></script>
   <title>カレー部</title>
 </head>
 
@@ -57,6 +58,7 @@
 
     <div class="container">
       <div class="panel panel-default">
+        <div class="result"></div>
         <div class="panel-heading">あなたのオススメのカレーは？</div>
         <div class="panel-body">
           <!-- <form> -->
@@ -85,7 +87,7 @@
           <div class="form-group">
             <label class="control-label">場所</label>
             <div id="map" class="col-12 col-sm-12" style="width:600px; height:380px; position: relative;"></div>
-          <input class="form-control" type="text" id="address" readonly>
+            <input class="form-control" type="text" id="address" readonly>
           </div>
           <div class="form-group">
             <label class="control-label">写真</label>
@@ -94,9 +96,8 @@
               <label class="custom-file-label" for="customFile">ファイル選択...</label>
             </div>
           </div>
-          <button type="button" id="postdata" class="btn btn-outline-info">投稿</button>
+          <button type="button" id="postdata" class="btn btn-outline-info">確認</button>
           <!-- </form> -->
-          <div class="result"></div>
         </div>
       </div>
     </div>
@@ -122,5 +123,4 @@
     crossorigin="anonymous"></script>
   <script src="js/post.js"></script>
 </body>
-
 </html>
