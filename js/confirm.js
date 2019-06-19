@@ -16,7 +16,7 @@ lng = $('#lng').val();
 map.drawMap(new Y.LatLng(lat,lng), 15);
 map.addControl(new Y.LayerSetControl());
 map.addControl(new Y.SliderZoomControlVertical());
-map.addControl(new Y.SearchControl());
+// map.addControl(new Y.SearchControl());
 lating = map.getCenter();
 var label = new Y.Label(lating, 'ここ！');
 map.addFeature(label);
@@ -26,7 +26,7 @@ map.SearchControl
   //////////////////////////////////////////////////
   // 投稿ボタン押下
   //////////////////////////////////////////////////
-  $('#postdata').on('click', function () {
+  $('#new_post').on('click', function () {
     // 既存エラーメッセージの削除
     $('.result').empty();
     // 入力値の取得
@@ -67,7 +67,7 @@ map.SearchControl
           // $('.result').append('<li>' + data + '</li>');
           $('.result').append('<li>投稿が完了しました。</li>');
         } else {
-          $('.result').append('<li>データに不具合がありました。最初からやり直して下さい。</li>');
+          $('.result').append(data);
         }
         console.log(data);
       })

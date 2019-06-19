@@ -3,40 +3,40 @@ var lat;  //緯度
 var lng;  //経度
 
 $(function () {
-//////////////////////////////////////////////////
-// YOLP用意
-//////////////////////////////////////////////////
-var $ = Y.useJQuery();
-var map = new Y.Map('map');
-map.drawMap(new Y.LatLng(33.590184, 130.401689), 15);
-map.addControl(new Y.LayerSetControl());
-map.addControl(new Y.SliderZoomControlVertical());
-map.addControl(new Y.SearchControl());
-map.SearchControl
+  //////////////////////////////////////////////////
+  // YOLP用意
+  //////////////////////////////////////////////////
+  var $ = Y.useJQuery();
+  var map = new Y.Map('map');
+  map.drawMap(new Y.LatLng(33.590184, 130.401689), 15);
+  map.addControl(new Y.LayerSetControl());
+  map.addControl(new Y.SliderZoomControlVertical());
+  map.addControl(new Y.SearchControl());
+  map.SearchControl
 
-// クリックイベントを設定
-map.bind('click', function (latlng) { onClicked(latlng); });
+  // クリックイベントを設定
+  map.bind('click', function (latlng) { onClicked(latlng); });
 
-//クリックイベントを定義
-function onClicked(latlng) {
-  //クリック位置の緯度経度を指定して、リバースジオコーディングを実行
-  var geocoder = new Y.GeoCoder();
+  //クリックイベントを定義
+  function onClicked(latlng) {
+    //クリック位置の緯度経度を指定して、リバースジオコーディングを実行
+    var geocoder = new Y.GeoCoder();
 
-  geocoder.execute({ latlng: latlng }, function (result) {
-    map.clearFeatures();
-    console.log(result.features[0].property.Address);
-    if (result.features.length > 0) {
-      //リバースジオコーディング結果を表示
-      document.getElementById('address').value = result.features[0].property.Address;
-      var label = new Y.Label(latlng, 'ここ！');
-      map.addFeature(label);
-      lat = latlng.lat();
-      lng = latlng.lng();
-      console.log(lat);
-      console.log(lng);
-    }
-  });
-}
+    geocoder.execute({ latlng: latlng }, function (result) {
+      map.clearFeatures();
+      console.log(result.features[0].property.Address);
+      if (result.features.length > 0) {
+        //リバースジオコーディング結果を表示
+        document.getElementById('address').value = result.features[0].property.Address;
+        var label = new Y.Label(latlng, 'ここ！');
+        map.addFeature(label);
+        lat = latlng.lat();
+        lng = latlng.lng();
+        console.log(lat);
+        console.log(lng);
+      }
+    });
+  }
 
 
   //////////////////////////////////////////////////
@@ -59,7 +59,7 @@ function onClicked(latlng) {
     var hot_level = $('input[name="hot_level"]:checked').val(); //辛さ
     var impression = $('#impression').val(); //感想
     var address = $('#address').val(); //場所
-    var mode = 'check'; // 確認 or 登録判断用変数
+    var mode = 'new'; // 新規 or 詳細　判断用変数
     console.log(store_name);
     // イメージファイルセット
     var fd = new FormData();
@@ -74,6 +74,7 @@ function onClicked(latlng) {
     fd.append('address', address);
     fd.append('lat', lat);
     fd.append('lng', lng);
+    fd.append('mode', mode);
 
     $.ajax({
       url: '../error_check.php',

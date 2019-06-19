@@ -8,6 +8,7 @@ $impression = $_SESSION['impression'];  //感想
 $address = $_SESSION['address'];  //場所
 $lat = $_SESSION['lat'];  //緯度
 $lng = $_SESSION['lng'];  //経度
+$mode = $_SESSION['mode'];  //新規 or 詳細　確認用変数
 ?>
 
 <!doctype html>
@@ -99,7 +100,19 @@ $lng = $_SESSION['lng'];  //経度
             <label class="control-label">テスト用経度</label>
               <input class="form-control" type="text" id="lng" value="<?php echo $lng ?>" readonly>
           </div>
-          <button type="button" id="postdata" class="btn btn-outline-info">投稿</button>
+          <?php
+          echo "<pre>";
+          var_dump($_SESSION['mode']);
+          echo "</pre>";
+          if ($_SESSION['mode'] === "new") {
+            echo '<button type="button" id="new_post" class="btn btn-outline-info">投稿</button>';
+          }
+          else if ($_SESSION['mode'] === "detail") {
+            echo '<button type="button" id="detail_post" class="btn btn-outline-info">修正</button>'.
+                 '<button type="button" id="delete" class="btn btn-outline-info">削除</button>';
+          }
+          ?>
+          <!-- <button type="button" id="postdata" class="btn btn-outline-info">投稿</button> -->
           <!-- </form> -->
         </div>
       </div>
@@ -110,7 +123,7 @@ $lng = $_SESSION['lng'];  //経度
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="js/confirm.js"></script>

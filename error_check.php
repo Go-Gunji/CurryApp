@@ -29,10 +29,10 @@ else{
   $imginfo = getimagesize($_FILES["file"]["tmp_name"]); // 写真
   // 拡張子チェック
 if($imginfo["mime"] == "image/jpeg"){ $extension = ".jpg"; }
-if($imginfo["mime"] == "image/png"){ $extension = ".png"; }
-if($imginfo["mime"] == "image/gif"){ $extension = ".gif"; }
+// if($imginfo["mime"] == "image/png"){ $extension = ".png"; }
+// if($imginfo["mime"] == "image/gif"){ $extension = ".gif"; }
 if(empty($extension)){
-  $errors[] = "写真の拡張子はjpegか、pngか、gifでお願いします。";
+  $errors[] = "写真の拡張子はjpegでお願いします。";
 }
 }
 
@@ -42,28 +42,8 @@ if (count($errors)>0){
     echo $json1;
   exit();
 }
-// 画像登録処理
-$file_tmp = $_FILES["file"]["tmp_name"];
-$file_name = $_POST["curry_name"]. $extension; // アップロード時のファイル名を設定
-$file_save = "./img/tmp_img/" . $file_name; // アップロード対象のディレクトリを指定
-move_uploaded_file($file_tmp, $file_save); // アップロード処理
-        
-// // 配列を用意
-// $ary = array('store_name'=>$_POST['store_name'],
-// 'curry_name'=>$_POST['curry_name'],
-// 'hot_level'=>$_POST['hot_level'],
-// 'impression'=>$_POST['impression'],
-// 'address'=>$_POST['address'] );
-// 配列をjson_encode関数でJSON形式に変換
-// $json = json_encode($ary);
-// // $str = '店名:'.$store_name.'カレーの名前:'.$curry_name.'辛さ:'.$hot_level.'感想:'.$impression.'場所:'.$address;
-// // $result = nl2br($str);
 
-// // echo $result;
-// echo $json;
-$json2 = json_encode("成功");
-echo $json2;
-
+// セッションに値入れる
 $_SESSION["store_name"] = $_POST["store_name"];
 $_SESSION["curry_name"] = $_POST["curry_name"];
 $_SESSION["hot_level"] = $_POST["hot_level"];
@@ -71,4 +51,14 @@ $_SESSION["impression"] = $_POST["impression"];
 $_SESSION["address"] = $_POST["address"];
 $_SESSION["lat"] = $_POST["lat"];
 $_SESSION["lng"] = $_POST["lng"];
+$_SESSION["mode"] = $_POST["mode"];
+
+// 画像登録処理
+$file_tmp = $_FILES["file"]["tmp_name"];
+$file_name = $_POST["curry_name"]. $extension; // アップロード時のファイル名を設定
+$file_save = "./img/tmp_img/" . $file_name; // アップロード対象のディレクトリを指定
+move_uploaded_file($file_tmp, $file_save); // アップロード処理
+
+$json2 = json_encode("成功");
+echo $json2;
 ?>

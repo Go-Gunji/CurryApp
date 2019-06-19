@@ -7,70 +7,69 @@ session_start();
 $errors = [];
 
 //エラーチェック
-if (!isset($_POST["store_name"])||($_POST["store_name"]==="")){
+if (empty($_SESSION["store_name"])){
   $errors[] = "お店の名前を入れてください。";
 }
-if (!isset($_POST["curry_name"])||($_POST["curry_name"]==="")){
+if (empty($_SESSION["curry_name"])){
   $errors[] = "カレーの名前を入れてください。";
 }
-if (!isset($_POST["hot_level"])||($_POST["hot_level"]==="")){
+if (empty($_SESSION["hot_level"])){
   $errors[] = "辛さを選択してください。";
 }
-if (!isset($_POST["impression"])||($_POST["impression"]==="")){
+if (empty($_SESSION["impression"])){
   $errors[] = "一言でもいいので感想を教えてください。";
 }
-if (!isset($_POST["address"])||($_POST["address"]==="")){
+if (empty($_SESSION["address"])){
   $errors[] = "お店の場所をセットしてください。";
 }
-// if (empty($_FILES["file"]["tmp_name"])){
-//   $errors[] = "写真を選択してください。";
-// }
-// else{
-//   $imginfo = getimagesize($_FILES["file"]["tmp_name"]); // 写真
-//   // 拡張子チェック
-// if($imginfo["mime"] == "image/jpeg"){ $extension = ".jpg"; }
-// if($imginfo["mime"] == "image/png"){ $extension = ".png"; }
-// if($imginfo["mime"] == "image/gif"){ $extension = ".gif"; }
-// if(empty($extension)){
-//   $errors[] = "写真の拡張子はjpegか、pngか、gifでお願いします。";
-// }
-// }
 
-// エラーがあった時
+// エラーがあった時処理抜ける
 if (count($errors)>0){
     $json1 = json_encode($errors);
     echo $json1;
   exit();
 }
-// // 画像登録処理
-// $file_tmp = "./img/tmp_img/" . $_POST["curry_name"];
-// // $file_name = $_POST["curry_name"]. $extension; // アップロード時のファイル名を設定
-// $file_save = "./img/" . $_POST["curry_name"]; // アップロード対象のディレクトリを指定
-// move_uploaded_file($file_tmp, $file_save); // アップロード処理
 
-// ファイルをvarディレクトリに移動する
-rename("./img/tmp_img/". $_POST["curry_name"].".jpg", "./img/" . $_POST["curry_name"].".jpg");
-// // 配列を用意
-// $ary = array('store_name'=>$_POST['store_name'],
-// 'curry_name'=>$_POST['curry_name'],
-// 'hot_level'=>$_POST['hot_level'],
-// 'impression'=>$_POST['impression'],
-// 'address'=>$_POST['address'] );
-// 配列をjson_encode関数でJSON形式に変換
-// $json = json_encode($ary);
-// // $str = '店名:'.$store_name.'カレーの名前:'.$curry_name.'辛さ:'.$hot_level.'感想:'.$impression.'場所:'.$address;
-// // $result = nl2br($str);
+// セッションから値取り出す
+$store_name = $_SESSION["store_name"];
+$curry_name = $_SESSION["curry_name"];
+$hot_level = $_SESSION["hot_level"];
+$impression = $_SESSION["impression"];
+$address = $_SESSION["address"];
+$lat = $_SESSION["lat"];
+$lng = $_SESSION["lng"];
 
-// // echo $result;
-// echo $json;
-$json2 = json_encode("成功");
-echo $json2;
+// 画像ファイルを確定ディレクトリに移動する
+rename("./img/tmp_img/". $curry_name. ".jpg", "./img/". $curry_name. ".jpg");
 
-$_SESSION["store_name"] = $_POST["store_name"];
-$_SESSION["curry_name"] = $_POST["curry_name"];
-$_SESSION["hot_level"] = $_POST["hot_level"];
-$_SESSION["impression"] = $_POST["impression"];
-$_SESSION["address"] = $_POST["address"];
-$_SESSION["lat"] = $_POST["lat"];
-$_SESSION["lng"] = $_POST["lng"];
+//////////////////////////////////////////////////
+// 投稿データ登録
+//////////////////////////////////////////////////
+// 接続用ファイルの読み込み
+require_once('./db_connect.php');
+  try {
+      $pdo = new db();
+      $pdo = $pdo->connect();
+      
+      // SQL文作成
+      $sql = "INSERT INTO CurryInfo (store_name, curry_name, hot_level, impression, address, lat, lng) 
+              VALUES (:store_name, :curry_name, :hot_level, :impression, :address, :lat, :lng)";
+      // プリペアドステートメントを作る
+      $stm = $pdo->prepare($sql);
+      // プレースホルダに値をバインドする
+      $stm->bindValue(':store_name', $store_name, PDO::PARAM_STR);
+      $stm->bindValue(':curry_name', $curry_name, PDO::PARAM_STR);
+      $stm->bindValue(':hot_level', $hot_level, PDO::PARAM_INT);
+      $stm->bindValue(':impression', $impression, PDO::PARAM_STR);
+      $stm->bindValue(':address', $address, PDO::PARAM_STR);
+      $stm->bindValue(':lat', $lat, PDO::PARAM_STR);
+      $stm->bindValue(':lng', $lng, PDO::PARAM_STR);
+      // SQL文実行
+      $stm->execute();
+      echo json_encode("データベースに接続しました。");
+      // return $link;
+    
+  } catch (Exception $e) {
+      echo json_encode("データベース接続に失敗しました。".$e->getMessage()); 
+  }
 ?>
