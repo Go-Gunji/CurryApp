@@ -1,9 +1,9 @@
 <?php
 //セッションスタート
 session_start();
-//////////////////////////////////////////////////
+// ========================================================
 // データ取得
-//////////////////////////////////////////////////
+// ========================================================
 // 接続用ファイルの読み込み
 require_once('./db_connect.php');
 
@@ -37,7 +37,7 @@ if (!isset($_POST["id"])||($_POST["id"]==="")){
         $pdo = $pdo->connect();
         
       // SQL文作成
-      $sql = "SELECT store_name, curry_name, hot_level, impression, address, lat, lng
+      $sql = "SELECT id, store_name, curry_name, hot_level, impression, address, lat, lng
               FROM  CurryInfo
               WHERE id = :id";
       // プリペアドステートメントを作る
@@ -50,6 +50,7 @@ if (!isset($_POST["id"])||($_POST["id"]==="")){
         // 連想配列で結果を取得
         $result = $stm->fetchAll(PDO::FETCH_ASSOC);
         foreach ($result as $row) {
+        $_SESSION["id"]=$row["id"];
         $_SESSION["store_name"]=$row["store_name"];
         $_SESSION["curry_name"]=$row["curry_name"];
         $_SESSION["hot_level"]=$row["hot_level"];

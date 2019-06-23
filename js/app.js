@@ -10,7 +10,7 @@ $(function () {
             $.each(data, function(i){
                 $('.row').append('<div class="col-6 col-md-4">' + 
                 '<div class="card mb-4 box-shadow">' + 
-                '<img class="card-img-top" src="img/' + data[i].curry_name + '.jpg"' +'width="300" height="300" alt=' + data[i].curry_name + '>' + 
+                '<img class="card-img-top" src="img/' + data[i].curry_name + '.jpg"' +'width="200" height="300" alt=' + data[i].curry_name + '>' + 
                 '<div class="card-body" style="height: 20rem">' + 
                 '<h4 class="card-title">' + data[i].store_name + '</h4>' + 
                 '<p class="card-text">' + data[i].impression + '</p>' + 

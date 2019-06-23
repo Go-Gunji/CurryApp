@@ -1,7 +1,16 @@
 .custom-file-input:lang(ja) ~ .custom-file-label::after {
     content: "参照";
   }
+  .jumbotron {
+    background-image: url("../img/post.JPG");
+    background-size: cover;
+    background-position: center 60%;
+  }
 
   #map {
     margin-top: 15px;
+  }
+
+  .jumbotron p {
+    color: black;
   }

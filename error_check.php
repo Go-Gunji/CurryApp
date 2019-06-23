@@ -25,15 +25,16 @@ if (!isset($_POST["address"])||($_POST["address"]==="")){
 if (empty($_FILES["file"]["tmp_name"])){
   $errors[] = "写真を選択してください。";
 }
-else{
+else {
   $imginfo = getimagesize($_FILES["file"]["tmp_name"]); // 写真
+
   // 拡張子チェック
-if($imginfo["mime"] == "image/jpeg"){ $extension = ".jpg"; }
-// if($imginfo["mime"] == "image/png"){ $extension = ".png"; }
-// if($imginfo["mime"] == "image/gif"){ $extension = ".gif"; }
-if(empty($extension)){
-  $errors[] = "写真の拡張子はjpegでお願いします。";
-}
+  if($imginfo["mime"] == "image/jpeg"){ $extension = ".jpg"; }
+  if($imginfo["mime"] == "image/JPG"){ $extension = ".jpg"; }
+  if($imginfo["mime"] == "image/heic"){ $extension = ".jpg"; }
+  if(empty($extension)){
+    $errors[] = "写真の拡張子はjpegでお願いします。";
+  }
 }
 
 // エラーがあった時
@@ -51,6 +52,7 @@ $_SESSION["impression"] = $_POST["impression"];
 $_SESSION["address"] = $_POST["address"];
 $_SESSION["lat"] = $_POST["lat"];
 $_SESSION["lng"] = $_POST["lng"];
+$_SESSION["old_photo"] = $_POST["old_photo"];
 $_SESSION["mode"] = $_POST["mode"];
 
 // 画像登録処理

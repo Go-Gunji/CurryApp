@@ -1,6 +1,13 @@
 <?php
 session_start();
+// 共通クラスの読み込み
+require_once('./common.php');
 // セッションに保持した値取り出し
+if (empty($_SESSION['id'])) {
+  $id = "";
+} else {
+  $id = $_SESSION['id']; 
+}
 $store_name = $_SESSION['store_name'];  //店名
 $curry_name = $_SESSION["curry_name"];  //カレーの名前
 $hot_level = $_SESSION["hot_level"];  //辛さ
@@ -8,7 +15,15 @@ $impression = $_SESSION['impression'];  //感想
 $address = $_SESSION['address'];  //場所
 $lat = $_SESSION['lat'];  //緯度
 $lng = $_SESSION['lng'];  //経度
+if (isset($_SESSION['old_photo'])) {
+$old_photo = $_SESSION['old_photo'];  //古いほうの写真
+}
+else {
+  $old_photo = "";
+}
 $mode = $_SESSION['mode'];  //新規 or 詳細　確認用変数
+// $killer = new common();
+// $killer->kill_session();
 ?>
 
 <!doctype html>
@@ -41,7 +56,6 @@ $mode = $_SESSION['mode'];  //新規 or 詳細　確認用変数
       <div class="navbar navbar-dark bg-dark box-shadow">
         <div class="container d-flex justify-content-between">
           <a href="index.html" class="navbar-brand d-flex align-items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
             <strong>カレー部</strong>
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,7 +72,7 @@ $mode = $_SESSION['mode'];  //新規 or 詳細　確認用変数
           <h1 class="jumbotron-heading">福岡カレー巡り</h1>
           <p class="lead">福岡のカレーをただひたすら紹介し合う場所です。</p>
           <p>
-            <a href="post.html" class="btn btn-danger my-2">教えてあげたい</a>
+            <a href="post.php" class="btn btn-danger my-2">教えてあげたい</a>
             <!-- <a href="location.html" class="btn btn-info my-2">場所を知りたい</a> -->
           </p>
         </div>
@@ -72,46 +86,69 @@ $mode = $_SESSION['mode'];  //新規 or 詳細　確認用変数
           <!-- <form> -->
           <div class="form-group">
             <label class="control-label">店名</label>
-            <input class="form-control" type="text" id="store_name" value="<?php echo $store_name ?>" readonly>
+            <input class="form-control" type="text" id="store_name" value="<?php echo $store_name; ?>" readonly>
           </div>
           <div class="form-group">
             <label class="control-label">カレーの名前</label>
-            <input class="form-control" type="text" id="curry_name" value="<?php echo $curry_name ?>" readonly>
+            <input class="form-control" type="text" id="curry_name" value="<?php echo $curry_name; ?>" readonly>
           </div>
           <div class="form-group">
             <label class="control-label">辛さレベル</label>
-              <input class="form-control" type="text" id="hot_level" value="<?php echo $hot_level ?>" readonly>
+              <input class="form-control" type="text" id="hot_level" value="<?php echo $hot_level; ?>" readonly>
           </div>
           <div class="form-group">
             <label class="control-label">感想</label>
-            <textarea class="form-control" rows="3" maxlength="80" id="impression" readonly><?php echo $impression ?></textarea>
+            <textarea class="form-control" rows="3" maxlength="80" id="impression" readonly><?php echo $impression; ?></textarea>
           </div>
+ 
           <div class="form-group">
             <label class="control-label">場所</label>
             <div id="map" class="col-12 col-sm-12" style="width:600px; height:380px; position: relative;"></div>
-            <input class="form-control" type="text" id="address" value= "<?php echo $address ?>" readonly>
+            <input class="form-control" type="text" id="address" value= "<?php echo $address; ?>" readonly>
+          </div>
+
+          <label class="control-label">写真</label>
+          <div>
+          <?php 
+          if ($mode === "new") {
+            echo '<img src="./img/tmp_img/', $curry_name, '.jpg" class="img-responsive" width="300" height="300">';
+          }
+          else if ($mode === "detail") {
+            echo '<img src="./img/', $curry_name, '.jpg" class="img-thumbnail" width="300" height="300">';
+          }
+          ?>
           </div>
 
           <div class="form-group">
             <label class="control-label">テスト用緯度</label>
-              <input class="form-control" type="text" id="lat" value="<?php echo $lat ?>" readonly>
+              <input class="form-control" type="text" id="lat" value="<?php echo $lat; ?>" readonly>
           </div>
           <div class="form-group">
             <label class="control-label">テスト用経度</label>
-              <input class="form-control" type="text" id="lng" value="<?php echo $lng ?>" readonly>
+              <input class="form-control" type="text" id="lng" value="<?php echo $lng; ?>" readonly>
           </div>
+          <div class="form-group">
+            <label class="control-label">テストID</label>
+              <input class="form-control" type="text" id="id" value="<?php echo $id; ?>" readonly>
+          </div>
+          <div class="form-group">
+            <label class="control-label">現写真名</label>
+              <input class="form-control" type="text" id="old_photo" value="<?php echo $old_photo; ?>" readonly>
+          </div>
+
           <?php
-          echo "<pre>";
-          var_dump($_SESSION['mode']);
-          echo "</pre>";
-          if ($_SESSION['mode'] === "new") {
+          // 新規データ作成の時は、投稿ボタンと戻るボタンのみ
+          if ($mode === "new") {
+            echo '<button type="button" id="return" class="btn btn-outline-info">戻る</button>';
             echo '<button type="button" id="new_post" class="btn btn-outline-info">投稿</button>';
           }
-          else if ($_SESSION['mode'] === "detail") {
-            echo '<button type="button" id="detail_post" class="btn btn-outline-info">修正</button>'.
-                 '<button type="button" id="delete" class="btn btn-outline-info">削除</button>';
+          // 詳細画面の時は、修正ボタンと削除ボタンのみ
+          else if ($mode === "detail") {
+            echo '<button type="button" id="detail_post" class="btn btn-outline-info">修正</button>';
+            echo '<button type="button" id="delete" class="btn btn-outline-info">削除</button>';
           }
           ?>
+
           <!-- <button type="button" id="postdata" class="btn btn-outline-info">投稿</button> -->
           <!-- </form> -->
         </div>

@@ -1,10 +1,7 @@
 <?php
 //セッションスタート
 session_start();
-// 共通クラスの読み込み
-require_once('./common.php');
-$killer = new common();
-$killer->kill_session();
+
 //投稿内容の入力チェック
 // エラーチェック用配列用意
 $errors = [];
@@ -34,6 +31,7 @@ if (count($errors)>0){
 }
 
 // セッションから値取り出す
+$id = $_POST["id"];
 $store_name = $_POST["store_name"];
 $curry_name = $_POST["curry_name"];
 $hot_level = $_POST["hot_level"];
@@ -52,11 +50,12 @@ require_once('./db_connect.php');
       $pdo = $pdo->connect();
       
       // SQL文作成
-      $sql = "INSERT INTO CurryInfo (store_name, curry_name, hot_level, impression, address, lat, lng) 
-              VALUES (:store_name, :curry_name, :hot_level, :impression, :address, :lat, :lng)";
+      $sql = "UPDATE CurryInfo SET store_name = :store_name, curry_name = :curry_name, hot_level = :hot_level, impression = :impression, address = :address, lat = :lat, lng = :lng) 
+              WHERE (id = :id)";
       // プリペアドステートメントを作る
       $stm = $pdo->prepare($sql);
       // プレースホルダに値をバインドする
+      $stm->bindValue(':id', $id, PDO::PARAM_INT);
       $stm->bindValue(':store_name', $store_name, PDO::PARAM_STR);
       $stm->bindValue(':curry_name', $curry_name, PDO::PARAM_STR);
       $stm->bindValue(':hot_level', $hot_level, PDO::PARAM_INT);
