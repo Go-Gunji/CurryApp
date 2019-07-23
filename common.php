@@ -24,3 +24,29 @@ class common {
         
     }
 }
+
+    // コンボボックスチェック関数
+    function checked($value, $question) {
+        if (is_array($question)) {
+        $isChecked = in_array($value, $question);
+        } else {
+        $isChecked = ($value===$question);
+        }
+        if ($isChecked) {
+        echo "checked";
+        } else {
+        echo "";
+        }
+    }
+
+    // 引数に対してhtmlspecialchars()
+    function es ($data, $encode="UTF-8") {
+        // $dataが配列のとき
+        if (is_array($data)) {
+            // 再帰呼び出し
+            return array_map(__METHOD__, $data);
+        } else {
+            // HTMLエスケープを行う
+            return htmlspecialchars($data, ENT_QUOTES, $encode);
+        }
+    }

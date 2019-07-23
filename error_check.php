@@ -13,7 +13,7 @@ if (!isset($_POST["store_name"])||($_POST["store_name"]==="")){
 if (!isset($_POST["curry_name"])||($_POST["curry_name"]==="")){
   $errors[] = "カレーの名前を入れてください。";
 }
-if (!isset($_POST["hot_level"])||($_POST["hot_level"]==="")){
+if (!isset($_POST["hot_level"])||($_POST["hot_level"]==="")||($_POST["hot_level"]==="undefined")){
   $errors[] = "辛さを選択してください。";
 }
 if (!isset($_POST["impression"])||($_POST["impression"]==="")){
@@ -52,7 +52,10 @@ $_SESSION["impression"] = $_POST["impression"];
 $_SESSION["address"] = $_POST["address"];
 $_SESSION["lat"] = $_POST["lat"];
 $_SESSION["lng"] = $_POST["lng"];
-$_SESSION["old_photo"] = $_POST["old_photo"];
+if(!empty($_POST["old_photo"])) {
+  $_SESSION["old_photo"] = $_POST["old_photo"];
+}
+
 $_SESSION["mode"] = $_POST["mode"];
 
 // 画像登録処理

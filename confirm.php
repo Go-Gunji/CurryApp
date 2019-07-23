@@ -16,7 +16,7 @@ $address = $_SESSION['address'];  //場所
 $lat = $_SESSION['lat'];  //緯度
 $lng = $_SESSION['lng'];  //経度
 if (isset($_SESSION['old_photo'])) {
-$old_photo = $_SESSION['old_photo'];  //古いほうの写真
+  $old_photo = $_SESSION['old_photo'];  //古いほうの写真
 }
 else {
   $old_photo = "";
@@ -55,7 +55,7 @@ $mode = $_SESSION['mode'];  //新規 or 詳細　確認用変数
       </div>
       <div class="navbar navbar-dark bg-dark box-shadow">
         <div class="container d-flex justify-content-between">
-          <a href="index.html" class="navbar-brand d-flex align-items-center">
+          <a href="index.php" class="navbar-brand d-flex align-items-center">
             <strong>カレー部</strong>
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,10 +71,10 @@ $mode = $_SESSION['mode'];  //新規 or 詳細　確認用変数
         <div class="container">
           <h1 class="jumbotron-heading">福岡カレー巡り</h1>
           <p class="lead">福岡のカレーをただひたすら紹介し合う場所です。</p>
-          <p>
-            <a href="post.php" class="btn btn-danger my-2">教えてあげたい</a>
+          <!-- <p> -->
+            <!-- <a href="post.php" class="btn btn-danger my-2">教えてあげたい</a> -->
             <!-- <a href="location.html" class="btn btn-info my-2">場所を知りたい</a> -->
-          </p>
+          <!-- </p> -->
         </div>
       </section>
 
@@ -86,25 +86,25 @@ $mode = $_SESSION['mode'];  //新規 or 詳細　確認用変数
           <!-- <form> -->
           <div class="form-group">
             <label class="control-label">店名</label>
-            <input class="form-control" type="text" id="store_name" value="<?php echo $store_name; ?>" readonly>
+            <input class="form-control" type="text" id="store_name" value="<?php echo es($store_name); ?>" readonly>
           </div>
           <div class="form-group">
             <label class="control-label">カレーの名前</label>
-            <input class="form-control" type="text" id="curry_name" value="<?php echo $curry_name; ?>" readonly>
+            <input class="form-control" type="text" id="curry_name" value="<?php echo es($curry_name); ?>" readonly>
           </div>
           <div class="form-group">
             <label class="control-label">辛さレベル</label>
-              <input class="form-control" type="text" id="hot_level" value="<?php echo $hot_level; ?>" readonly>
+              <input class="form-control" type="text" id="hot_level" value="<?php echo es($hot_level); ?>" readonly>
           </div>
           <div class="form-group">
             <label class="control-label">感想</label>
-            <textarea class="form-control" rows="3" maxlength="80" id="impression" readonly><?php echo $impression; ?></textarea>
+            <textarea class="form-control" rows="3" maxlength="80" id="impression" readonly><?php echo es($impression); ?></textarea>
           </div>
  
           <div class="form-group">
             <label class="control-label">場所</label>
             <div id="map" class="col-12 col-sm-12" style="width:600px; height:380px; position: relative;"></div>
-            <input class="form-control" type="text" id="address" value= "<?php echo $address; ?>" readonly>
+            <input class="form-control" type="text" id="address" value= "<?php echo es($address); ?>" readonly>
           </div>
 
           <label class="control-label">写真</label>
@@ -121,19 +121,23 @@ $mode = $_SESSION['mode'];  //新規 or 詳細　確認用変数
 
           <div class="form-group">
             <label class="control-label">テスト用緯度</label>
-              <input class="form-control" type="text" id="lat" value="<?php echo $lat; ?>" readonly>
+              <input class="form-control" type="text" id="lat" value="<?php echo es($lat); ?>" readonly>
           </div>
           <div class="form-group">
             <label class="control-label">テスト用経度</label>
-              <input class="form-control" type="text" id="lng" value="<?php echo $lng; ?>" readonly>
+              <input class="form-control" type="text" id="lng" value="<?php echo es($lng); ?>" readonly>
           </div>
           <div class="form-group">
             <label class="control-label">テストID</label>
-              <input class="form-control" type="text" id="id" value="<?php echo $id; ?>" readonly>
+              <input class="form-control" type="text" id="id" value="<?php echo es($id); ?>" readonly>
           </div>
           <div class="form-group">
             <label class="control-label">現写真名</label>
-              <input class="form-control" type="text" id="old_photo" value="<?php echo $old_photo; ?>" readonly>
+              <input class="form-control" type="text" id="old_photo" value="<?php echo es($old_photo); ?>" readonly>
+          </div>
+          <div class="form-group">
+            <label class="control-label">モード</label>
+              <input class="form-control" type="text" id="mode" value="<?php echo es($mode); ?>" readonly>
           </div>
 
           <?php
@@ -154,8 +158,12 @@ $mode = $_SESSION['mode'];  //新規 or 詳細　確認用変数
         </div>
       </div>
     </div>
-
     </main>
+    <footer class="footer">
+      <div class="container">
+      <p class="text-muted">© 2019　go.gunji</p>
+      </div>
+    </footer>
 
 
     <!-- Optional JavaScript -->

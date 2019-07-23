@@ -2,15 +2,22 @@
     content: "参照";
   }
   .jumbotron {
-    background-image: url("../img/post.JPG");
+    background-image: url("../img/post.jpg");
     background-size: cover;
     background-position: center 60%;
   }
 
+  .jumbotron h1 {
+    color: red;
+  }
   #map {
     margin-top: 15px;
   }
 
   .jumbotron p {
     color: black;
+  }
+
+  .result {
+    color: red;
   }

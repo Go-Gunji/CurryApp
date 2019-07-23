@@ -30,9 +30,8 @@ $(function () {
 
   //クリックイベントを定義
   function onClicked(latlng) {
+    var geocoder =new Y.GeoCoder();
     //クリック位置の緯度経度を指定して、リバースジオコーディングを実行
-    var geocoder = new Y.GeoCoder();
-
     geocoder.execute({ latlng: latlng }, function (result) {
       map.clearFeatures();
       console.log(result.features[0].property.Address);
@@ -48,7 +47,6 @@ $(function () {
       }
     });
   }
-
 
   // ========================================================
   // 場所表示
@@ -74,7 +72,7 @@ $(function () {
       var hot_level = $('input[name="hot_level"]:checked').val(); //辛さ
       var impression = $('#impression').val(); //感想
       var address = $('#address').val(); //場所
-      var mode = 'new'; // 新規 or 詳細　判断用変数
+      var mode = $('#mode').val();; // 新規 or 更新　判断用変数
       console.log(store_name);
       // イメージファイルセット
       var fd = new FormData();

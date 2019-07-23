@@ -1,5 +1,7 @@
 <?php
 session_start();
+// 共通クラスの読み込み
+require_once('./common.php');
 //////////////////////////////////////////////////
 // 確認画面から戻ってきた時
 //////////////////////////////////////////////////
@@ -48,41 +50,27 @@ if (empty($_SESSION['lng'])) {
 } else {
   $lng = $_SESSION['lng']; 
 }
-
-// コンボボックスチェック
-function checked($value, $question) {
-  if (is_array($question)) {
-    $isChecked = in_array($value, $question);
-  } else {
-    $isChecked = ($value===$question);
-  }
-  if ($isChecked) {
-    echo "checked";
-  } else {
-    echo "";
-  }
+if (empty($_SESSION['mode'])) {
+  $mode = "new";
+} else {
+  $mode = $_SESSION['mode']; 
 }
 ?>
 
 <!doctype html>
 <html lang="ja">
-
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
     integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <!-- CSS -->
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/post.css">
-  <script src="https://map.yahooapis.jp/js/V1/jsapi?appid=dj00aiZpPVNYc1JXcXBvb2NMMCZzPWNvbnN1bWVyc2VjcmV0Jng9MDQ-"
-    type="text/javascript" charset="UTF-8"></script>
   <title>カレー部</title>
 </head>
-
 <body>
   <header>
     <div class="collapse bg-dark" id="navbarHeader">
@@ -97,8 +85,7 @@ function checked($value, $question) {
     </div>
     <div class="navbar navbar-dark bg-dark box-shadow">
       <div class="container d-flex justify-content-between">
-        <a href="index.html" class="navbar-brand d-flex align-items-center">
-          <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg> -->
+        <a href="index.php" class="navbar-brand d-flex align-items-center">
           <strong>カレー部</strong>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader"
@@ -108,32 +95,28 @@ function checked($value, $question) {
       </div>
     </div>
   </header>
-
   <main role="main">
-
     <section class="jumbotron">
       <div class="container">
         <h1 class="jumbotron-heading">福岡カレー巡り</h1>
-        <p class="lead">福岡のカレーをただひたすら紹介し合う場所です。</p>
+        <p class="lead">とっておきのおすすめカレーを教えてください。</p>
         <p>
           <!-- <a href="location.html" class="btn btn-info my-2">場所を知りたい</a> -->
         </p>
       </div>
     </section>
-
     <div class="container">
       <div class="panel panel-default">
-        <div class="result"></div>
         <div class="panel-heading">あなたのオススメのカレーは？</div>
         <div class="panel-body">
           <!-- <form> -->
           <div class="form-group">
             <label class="control-label">店名</label>
-            <input class="form-control" type="text" maxlength="15" id="store_name" value="<?php echo $store_name; ?>">
+            <input class="form-control" type="text" maxlength="15" id="store_name" value="<?php echo es($store_name); ?>">
           </div>
           <div class="form-group">
             <label class="control-label">カレーの名前</label>
-            <input class="form-control" type="text" maxlength="15" id="curry_name" value="<?php echo $curry_name; ?>">
+            <input class="form-control" type="text" maxlength="15" id="curry_name" value="<?php echo es($curry_name); ?>">
           </div>
           <div class="form-group">
             <label class="control-label">辛さレベル</label>
@@ -147,12 +130,12 @@ function checked($value, $question) {
           </div>
           <div class="form-group">
             <label class="control-label">感想</label>
-            <textarea class="form-control" rows="3" maxlength="55" id="impression"><?php echo $impression; ?></textarea>
+            <textarea class="form-control" rows="3" maxlength="55" id="impression"><?php echo es($impression); ?></textarea>
           </div>
           <div class="form-group">
             <label class="control-label">場所</label>
             <div id="map" class="col-12 col-sm-12" style="width:600px; height:380px; position: relative;"></div>
-            <input class="form-control" type="text" id="address" value= "<?php echo $address; ?>" readonly>
+            <input class="form-control" type="text" id="address" value= "<?php echo es($address); ?>" readonly>
           </div>
           <div class="form-group">
             <label class="control-label">写真</label>
@@ -164,40 +147,46 @@ function checked($value, $question) {
 
           <div class="form-group">
             <label class="control-label">テスト用緯度</label>
-              <input class="form-control" type="text" id="lat" value="<?php echo $lat; ?>" readonly>
+              <input class="form-control" type="text" id="lat" value="<?php echo es($lat); ?>" readonly>
           </div>
           <div class="form-group">
             <label class="control-label">テスト用経度</label>
-              <input class="form-control" type="text" id="lng" value="<?php echo $lng; ?>" readonly>
+              <input class="form-control" type="text" id="lng" value="<?php echo es($lng); ?>" readonly>
           </div>
           <div class="form-group">
             <label class="control-label">テストID</label>
-              <input class="form-control" type="text" id="id" value="<?php echo $id; ?>" readonly>
+              <input class="form-control" type="text" id="id" value="<?php echo es($id); ?>" readonly>
           </div>
           <div class="form-group">
             <label class="control-label">現写真名</label>
-              <input class="form-control" type="text" id="old_photo" value="<?php echo $curry_name; ?>" readonly>
+              <input class="form-control" type="text" id="old_photo" value="<?php echo es($curry_name); ?>" readonly>
           </div>
-
+          <div class="form-group">
+            <label class="control-label">モード</label>
+              <input class="form-control" type="text" id="mode" value="<?php echo es($mode); ?>" readonly>
+          </div>
+          <div class="result"></div>
           <button type="button" id="postdata" class="btn btn-outline-info">確認</button>
           <!-- </form> -->
         </div>
       </div>
     </div>
-
-    <!-- Begin Yahoo! JAPAN Web Services Attribution Snippet -->
-    <!-- <a href="https://developer.yahoo.co.jp/about">
-    <img src="https://s.yimg.jp/images/yjdn/yjdn_attbtn2_105_17.gif" width="105" height="17" title="Webサービス by Yahoo! JAPAN" alt="Webサービス by Yahoo! JAPAN" border="0" style="margin:15px 15px 15px 15px"></a> -->
-    <!-- End Yahoo! JAPAN Web Services Attribution Snippet -->
-
+  <footer class="footer">
+    <div class="container">
+    <p class="text-muted">© 2019　go.gunji</p>
+    </div>
   </main>
 
 
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  </footer>
+
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"crossorigin="anonymous"></script>
+  <!-- dialog用JQuery -->
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+  <script src="https://map.yahooapis.jp/js/V1/jsapi?appid=dj00aiZpPVNYc1JXcXBvb2NMMCZzPWNvbnN1bWVyc2VjcmV0Jng9MDQ-"
+    type="text/javascript" charset="UTF-8"></script>
   <script src="js/post.js"></script>
 </body>
 </html>

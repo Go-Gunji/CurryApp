@@ -50,8 +50,8 @@ require_once('./db_connect.php');
       $pdo = $pdo->connect();
       
       // SQL文作成
-      $sql = "UPDATE CurryInfo SET store_name = :store_name, curry_name = :curry_name, hot_level = :hot_level, impression = :impression, address = :address, lat = :lat, lng = :lng) 
-              WHERE (id = :id)";
+      $sql = "UPDATE CurryInfo SET store_name = :store_name, curry_name = :curry_name, hot_level = :hot_level, impression = :impression, address = :address, lat = :lat, lng = :lng
+              WHERE id = :id";
       // プリペアドステートメントを作る
       $stm = $pdo->prepare($sql);
       // プレースホルダに値をバインドする
@@ -69,7 +69,7 @@ require_once('./db_connect.php');
       // 画像ファイルを確定ディレクトリに移動する
       rename("./img/tmp_img/". $curry_name. ".jpg", "./img/". $curry_name. ".jpg");
       
-      echo json_encode("データベースに接続しました。");
+      echo json_encode("修正完了。");
       // return $link;
     
   } catch (Exception $e) {

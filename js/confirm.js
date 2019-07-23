@@ -30,6 +30,7 @@ $(function () {
     // 既存エラーメッセージの削除
     $('.result').empty();
     // 入力値の取得
+    var id = $('#id').val(); //ID
     var store_name = $('#store_name').val(); //店名
     var curry_name = $('#curry_name').val(); //カレーの名前
     var hot_level = $('#hot_level').val(); //辛さ
@@ -44,6 +45,7 @@ $(function () {
     // fd.append('file', $('#customFile').prop('files')[0]);
 
     // その他入力データのセット
+    fd.append('id', id);
     fd.append('store_name', store_name);
     fd.append('curry_name', curry_name);
     fd.append('hot_level', hot_level);

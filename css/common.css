@@ -7,8 +7,8 @@ body {
   }
 
   .jumbotron {
-    background-image: url("../img/post.JPG");
+    background-image: url("../img/post.jpg");
     background-size: cover;
     background-position: center 60%;
   }
-  
+
