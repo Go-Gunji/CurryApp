@@ -51,7 +51,10 @@ $killer->kill_session();
     <section class="jumbotron">
       <div class="container">
         <h1 class="jumbotron-heading">福岡カレー巡り</h1>
-        <p class="lead">福岡のカレーをただひたすら紹介し合う場所です。</p>
+        <p class="lead">
+          福岡のカレーをただひたすら紹介し合う場所です。<br>
+          みんなのおすすめカレーがランダムで表示されます。
+        </p>
         <a href="post.php" class="btn btn-danger my-2">教えてあげたい</a>
       </div>
     </section>

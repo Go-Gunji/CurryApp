@@ -145,23 +145,23 @@ if (empty($_SESSION['mode'])) {
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" hidden>
             <label class="control-label">テスト用緯度</label>
               <input class="form-control" type="text" id="lat" value="<?php echo es($lat); ?>" readonly>
           </div>
-          <div class="form-group">
+          <div class="form-group" hidden>
             <label class="control-label">テスト用経度</label>
               <input class="form-control" type="text" id="lng" value="<?php echo es($lng); ?>" readonly>
           </div>
-          <div class="form-group">
+          <div class="form-group" hidden>
             <label class="control-label">テストID</label>
               <input class="form-control" type="text" id="id" value="<?php echo es($id); ?>" readonly>
           </div>
-          <div class="form-group">
+          <div class="form-group" hidden>
             <label class="control-label">現写真名</label>
               <input class="form-control" type="text" id="old_photo" value="<?php echo es($curry_name); ?>" readonly>
           </div>
-          <div class="form-group">
+          <div class="form-group" hidden>
             <label class="control-label">モード</label>
               <input class="form-control" type="text" id="mode" value="<?php echo es($mode); ?>" readonly>
           </div>

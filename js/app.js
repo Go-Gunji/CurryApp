@@ -8,7 +8,7 @@ $(function () {
     .done((data) => {
     // 9つ分のデータ生成、表示
     $.each(data, function(i){
-        $('.row').append('<div class="col-6 col-md-4">' + 
+        $('#curry_info').append('<div class="col-6 col-md-4">' + 
         '<div class="card mb-4 box-shadow">' + 
         '<img class="card-img-top" src="img/' + data[i].curry_name + '.jpg"' +'width="200" height="300" alt=' + data[i].curry_name + '>' + 
         '<div class="card-body" style="height: 20rem">' + 

@@ -70,7 +70,7 @@ require_once('./db_connect.php');
       // 画像ファイルを確定ディレクトリに移動する
       rename("./img/tmp_img/". $curry_name. ".jpg", "./img/". $curry_name. ".jpg");
       
-      echo json_encode("データベースに接続しました。");
+      echo json_encode("投稿しました！");
       // return $link;
     
   } catch (Exception $e) {

@@ -116,7 +116,7 @@ $(function () {
       // Ajax成功
       .done((data) => {
         if (data === '削除完了') {
-          window.location.href = '../index.html';
+          window.location.href = '../index.php';
         }
         console.log(data);
       })
